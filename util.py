@@ -1,10 +1,13 @@
 from longRandomWalk import *
 from TilingNumberLine import *
+from TilingWithInertia import *
 from copy import deepcopy
 import numpy as np
 
-def MCeducate(episodes = 10000, decaying=True):
-    nlt = NumLineTiling() 
+def MCeducate(nlt=None, episodes = 10000, decaying=True):
+    if type(nlt) == type(None):
+        nlt = NumLineTiling() 
+
     learningTrace = [deepcopy(nlt)]
 
     for e in range(episodes):
@@ -19,8 +22,9 @@ def MCeducate(episodes = 10000, decaying=True):
     return nlt, learningTrace
 
 
-def TDeducate(episodes = 10000, decaying=True):
-    nlt = NumLineTiling() 
+def TDeducate(nlt=None, episodes = 10000, decaying=True):
+    if type(nlt) == type(None):
+        nlt = NumLineTiling() 
     learningTrace = [deepcopy(nlt)]
 
     for e in range(episodes):
