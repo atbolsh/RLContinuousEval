@@ -6,7 +6,7 @@ from copy import deepcopy
 
 class NumLineTiling:
 
-    def __init__(self, size=1000, blockSize=100, interval=10, alpha = 0.1):
+    def __init__(self, size=1000, blockSize=100, interval=10, alpha = 0.01):
         self.size = size
         self.blockSize = blockSize
         self.interval = interval
@@ -44,10 +44,12 @@ class NumLineTiling:
         if l == -1: # Out of bounds.
             return 0
         
-        return sum(self.blockWeights[l, h])/(h - l) # Take average to avoid weird edge effects. 
+        return sum(self.blockWeights[l:h])/(h - l) # Take average to avoid weird edge effects. 
     
 
-    def moveVal(self, state, target): #Moves prediction towards target; generalizes to neighbors, of course.
+    def moveVal(self, state, target, alpha=-1): #Moves prediction towards target; generalizes to neighbors, of course.
+        if alpha <= 0: #None specified
+            alpha = self.alpha
         l, h = self.getBlocks(state)
 
         if l == -1: # Out of bounds.
@@ -55,7 +57,7 @@ class NumLineTiling:
 
         v = self.getVal(state)
         delta = target - v
-        gradStep = self.alpha*(delta / (h - l))
+        gradStep = alpha*(delta / (h - l))
         
         for i in range(l, h):
             self.blockWeights[i] += gradStep

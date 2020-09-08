@@ -34,10 +34,20 @@ on the right, or of -1 for terminating on the left."""
             self.complete = True
         elif self.state >= self.size:
             reward = 1
-            self.state = self.size
+            self.state = self.size -1
             self.complete = True
         else:
             reward = 0
         
         return self.state, reward, self.complete
      
+    def episode(self):
+        state, _ = self.currentState()
+        trace = [state]
+        while not (self.complete):
+            state, reward, _ = self.move()
+            trace.append(state)
+        return trace, reward #Last reward will be correct.
+
+
+
